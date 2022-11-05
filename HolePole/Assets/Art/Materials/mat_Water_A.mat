@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6697334087686527962
+--- !u!114 &-7818914907255854477
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,10 +20,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Skybox_2
-  m_Shader: {fileID: 106, guid: 0000000000000000f000000000000000, type: 0}
-  m_ValidKeywords:
-  - _SUNDISK_HIGH_QUALITY
+  m_Name: mat_Water_A
+  m_Shader: {fileID: -6465566751694194690, guid: c0157858db038464cb4d94e25a0e6824,
+    type: 3}
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -74,8 +74,20 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_03a7ef5e5ae64dc4934d6fa767dcce35_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 6b9b11ee5d729294eadc5d9f3740d520, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_8a5ac6ad18584cc89640013c51e2823a_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 6b9b11ee5d729294eadc5d9f3740d520, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Triplanar_6892c5e3c5c345c1866aba434f6294ea_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 6b9b11ee5d729294eadc5d9f3740d520, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -92,8 +104,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - Vector1_3e222d4ea45742128429d34185521d54: 0.7
+    - Vector1_5a05fe7a954c4f9d838672e34258dd48: 12
+    - Vector1_6e7a3412d27c47d0a495f357595e42ed: 7.4
+    - Vector1_cf711950f74f4f04b29dd90aa0695028: 70
+    - Vector1_d458078872c740b9a43d077f76beb9e6: 0.9
+    - Vector1_dfc27c6906674cd09783beb87489a80c: 1.02
     - _AlphaClip: 0
-    - _AtmosphereThickness: 1
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -104,30 +121,30 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _Exposure: 2.2
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _SunDisk: 2
-    - _SunSize: 0.04
-    - _SunSizeConvergence: 5
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_2f748ab0b7d2449fa9ee79c11c9f8d7e: {r: 0.20754717, g: 0.8301887, b: 0.76055825,
+        a: 0}
+    - Color_5ffad19a46d3477ab5beba6c808e313e: {r: 0.3725525, g: 0.6571279, b: 0.8679245,
+        a: 1}
+    - Color_eb33ecc6a10e444485f244cafaab64c2: {r: 1, g: 1, b: 1, a: 0.7176471}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GroundColor: {r: 0.18111429, g: 0.5783564, b: 0.6981132, a: 1}
-    - _SkyTint: {r: 0.2179601, g: 0.42784256, b: 0.5849056, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
