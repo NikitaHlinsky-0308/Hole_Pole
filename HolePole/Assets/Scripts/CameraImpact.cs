@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class CameraImpact : MonoBehaviour
 {
 
-    //public bool start = false;
+    public bool start = false;
     public AnimationCurve shakingCurve;
     public float duration = 1f;
 
@@ -57,4 +58,3 @@ public class CameraImpact : MonoBehaviour
         transform.localPosition = originalPosition;
     }
 }
-
