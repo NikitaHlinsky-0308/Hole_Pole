@@ -28,27 +28,7 @@ public class GateChanger : MonoBehaviour
         }
     }
 
-    // private void Update()
-    // {
-    //     if (Input.GetKeyDown(KeyCode.Space))
-    //     {
-    //         
-    //         plusCollider.enabled = false;
-    //         minusCollider.enabled = false;
-    //         
-    //         // if (plusCollider.enabled && minusCollider.enabled)
-    //         // {
-    //         //     plusCollider.enabled = false;
-    //         //     minusCollider.enabled = false;
-    //         // }
-    //         // if (!plusCollider.enabled && !minusCollider.enabled)
-    //         // {
-    //         //     plusCollider.enabled = true;
-    //         //     minusCollider.enabled = true;
-    //         // }
-    //         
-    //     }
-    // }
+    
 
     private IEnumerator ChangeDelay(float time)
     {
@@ -83,6 +63,18 @@ public class GateChanger : MonoBehaviour
         if (!_isOnDelay)
         {
             StartCoroutine(ChangeDelay(2f));
+        }
+    }
+    
+    // call setOppositeGate on triggerEnter
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("gate works");
+
+        if (other.CompareTag("Player"))
+        {
+            SetOppositeGate();
         }
     }
 }

@@ -29,6 +29,8 @@ public class EnemyBehaviour : MonoBehaviour
     bool alreadyAttacked;
     //public GameObject projectile;
 
+    [SerializeField] private Animator anim;
+
     //States
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange, enemyAttacked, isGrounded, isBorting;
@@ -124,7 +126,7 @@ public class EnemyBehaviour : MonoBehaviour
             if ( startingDest) StartingDestination();
             if (!playerInSightRange && !playerInAttackRange && !startingDest) Patroling();
             if (playerInSightRange && !playerInAttackRange) ChasePlayer();
-            if (playerInAttackRange && playerInSightRange) AttackPlayer();
+            //if (playerInAttackRange && playerInSightRange) AttackPlayer();
             
             
             
@@ -157,11 +159,15 @@ public class EnemyBehaviour : MonoBehaviour
     [ContextMenu(nameof(StartingDestination))]
     public void StartingDestination()
     {
+        anim.SetBool("Running", true);
         agent.SetDestination(GatesManager.instance.gate.transform.position);
     }
     
     private void Patroling()
     {
+        Debug.Log("start patroling");
+        anim.SetBool("Running", true);
+        
         if (!walkPointSet) SearchWalkPoint();
 
         if (walkPointSet)
@@ -187,6 +193,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void ChasePlayer()
     {
+        anim.SetBool("Running", true);
         agent.SetDestination(player.position);
     }
 
@@ -301,7 +308,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (other.gameObject.CompareTag("GatesPlus"))
         {
-             // Debug.Log("Plus");
+             _gateChanger = other.GetComponentInParent<GateChanger>();
              _gateChanger.SetOppositeGate();
              IncreaseLvl();
              UpdateLevelStats(CurrentLvl);
@@ -309,14 +316,15 @@ public class EnemyBehaviour : MonoBehaviour
         }
         if (other.gameObject.CompareTag("GatesMinus"))
         {
-             
-             _gateChanger.SetOppositeGate();
+            _gateChanger = other.GetComponentInParent<GateChanger>();
+            _gateChanger.SetOppositeGate();
              DecreaseLvl();
              UpdateLevelStats(CurrentLvl);
              //Debug.Log(CurrentLvl);
         }
         if (other.gameObject.CompareTag("Player"))
         {
+            anim.SetTrigger("Attack");
             StartCoroutine(playerController.AttackedReaction(transform.eulerAngles.y, _punchStrength));
         }
         
@@ -331,6 +339,7 @@ public class EnemyBehaviour : MonoBehaviour
     public void UpdateLevelStats(int currentLvl)
     {
         startingDest = false;
+        Debug.Log(123);
         switch (currentLvl)
         {
             case 1:

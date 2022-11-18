@@ -9,6 +9,11 @@ public class PlayerController : MonoBehaviour, IPorgressable
     [SerializeField] private float rotateSpeed;
     public Vector3 moveDirection;
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private FloatingJoystick joystick;
+
+    [SerializeField] private Animator anim;
+    // private float horizontal;
+    // private float vertical;
 
     //private float _punchStrength;
     public float attackRange;
@@ -52,9 +57,17 @@ public class PlayerController : MonoBehaviour, IPorgressable
     private GateChanger _gateChanger;
     private void Start()
     {
-        _gateChanger = gateChanger.GetComponent<GateChanger>();
+        //_gateChanger = gateChanger.GetComponent<GateChanger>();
         CurrentLvl = 1;
         UpdateLevelStats(CurrentLvl);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            anim.SetTrigger("Attack");
+        }
     }
 
     void FixedUpdate()
@@ -63,12 +76,24 @@ public class PlayerController : MonoBehaviour, IPorgressable
         {
             float horizontal = Input.GetAxisRaw("Horizontal");
             float vertical = Input.GetAxisRaw("Vertical");
+            
+            // float horizontal = joystick.Horizontal;
+            // float vertical = joystick.Vertical;
+            
             moveDirection = new Vector3(horizontal, 0.0f, vertical);
             moveDirection.Normalize();
             moveDirection *= speed;
 
             characterController.Move(moveDirection * Time.fixedDeltaTime);
             //transform.rotation = Quaternion.Euler(0f, Mathf.,0f);
+        }
+
+        if (moveDirection.magnitude >= 1)
+        {
+            anim.SetBool("Running", true);
+        } else if (moveDirection.magnitude == 0)            
+        {
+            anim.SetBool("Running", false);
         }
 
         if (moveDirection != Vector3.zero)
@@ -160,19 +185,20 @@ public class PlayerController : MonoBehaviour, IPorgressable
 
             // New
             
+            anim.SetTrigger("Attack");
             EnemyBehaviour enemyBehaviour = other.gameObject.GetComponent<EnemyBehaviour>();
             enemyBehaviour.isBorting = true;
             enemyBehaviour.agent.enabled = false;
             enemyBehaviour.playerMoveDir = moveDirection;
             enemyBehaviour.playerStrength = _punchStrength;
             enemyBehaviour.StartCoroutine("borting");
-            //enemyBehaviour.Attacked(moveDirection, _punchStrength);
-            //enemyBehaviour.ChangeAttackState(moveDirection, _punchStrength, true);
+            
+            
         }
 
         if (other.gameObject.CompareTag("GatesPlus"))
         {
-            
+            _gateChanger = other.GetComponentInParent<GateChanger>();
             _gateChanger.SetOppositeGate();
 
             IncreaseLvl();
@@ -181,7 +207,7 @@ public class PlayerController : MonoBehaviour, IPorgressable
         }
         if (other.gameObject.CompareTag("GatesMinus"))
         {
-            //Debug.Log("Minus");
+            _gateChanger = other.GetComponentInParent<GateChanger>();
             _gateChanger.SetOppositeGate();
 
             DecreaseLvl();

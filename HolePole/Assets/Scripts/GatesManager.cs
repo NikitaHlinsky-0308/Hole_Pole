@@ -41,7 +41,6 @@ public class GatesManager : MonoBehaviour
     private IEnumerator Delay()
     {
         yield return new WaitForSeconds(0.5f);
-        Debug.Log(123);
         enemy.startingDest = true;
     }
     
