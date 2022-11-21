@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Gate_pole
+  m_Name: Gate_pole_green
   m_Shader: {fileID: -6465566751694194690, guid: 48d1e3f5b21d3834d8da1dd69a200905,
     type: 3}
   m_ValidKeywords: []
