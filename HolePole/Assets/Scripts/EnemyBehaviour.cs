@@ -36,6 +36,7 @@ public class EnemyBehaviour : MonoBehaviour
     public bool playerInSightRange, playerInAttackRange, enemyAttacked, isGrounded, isBorting;
     public Vector3 playerMoveDir;
     public float playerStrength;
+    private bool _isInAttackState;
 
     //public AnimationCurve AttackedCurve;
     public bool playerAttack { get; set; }
@@ -126,6 +127,11 @@ public class EnemyBehaviour : MonoBehaviour
             if ( startingDest) StartingDestination();
             if (!playerInSightRange && !playerInAttackRange && !startingDest) Patroling();
             if (playerInSightRange && !playerInAttackRange) ChasePlayer();
+            if (IsEnemyClose())
+            {
+                anim.SetTrigger("Attack");
+            }
+            
             //if (playerInAttackRange && playerInSightRange) AttackPlayer();
             
             
@@ -289,13 +295,20 @@ public class EnemyBehaviour : MonoBehaviour
         }
         else
         {
-            // Death()
-            Debug.Log("death");
+            StartCoroutine(DestroyEnemy(1.1f));
         }
     }
-
-    private void DestroyEnemy()
+    
+    private IEnumerator AlreadyAttaked(float time)
     {
+        _isInAttackState = true;
+        yield return new WaitForSeconds(time);
+        _isInAttackState = false;
+    }
+
+    private IEnumerator DestroyEnemy(float time)
+    {
+        yield return new WaitForSeconds(time);
         Destroy(gameObject);
     }
 
@@ -324,8 +337,9 @@ public class EnemyBehaviour : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Player"))
         {
-            anim.SetTrigger("Attack");
-            StartCoroutine(playerController.AttackedReaction(transform.eulerAngles.y, _punchStrength));
+            StartCoroutine(playerController.AttackedReaction(
+                transform.eulerAngles.y, 
+                _punchStrength));
         }
         
         // if (other.gameObject.CompareTag("Player"))
@@ -336,10 +350,22 @@ public class EnemyBehaviour : MonoBehaviour
         
     }
     
+    private bool IsEnemyClose()
+    {
+        Ray ray = new Ray(transform.position, transform.forward);
+
+        if (Physics.Raycast(ray, 1.6f, whatIsPlayer) && !_isInAttackState)
+        {
+            StartCoroutine(AlreadyAttaked(2));
+            return true;
+        }
+
+        return false;
+    }
+    
     public void UpdateLevelStats(int currentLvl)
     {
         startingDest = false;
-        Debug.Log(123);
         switch (currentLvl)
         {
             case 1:
@@ -363,6 +389,12 @@ public class EnemyBehaviour : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRange);
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, sightRange);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawRay(transform.position, transform.forward * 2f);
     }
 
     public int Health

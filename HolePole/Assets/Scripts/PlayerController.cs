@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour, IPorgressable
     private bool _isUnderImpact;
     private float _punchStrength;
     private bool _enemyInAttackRange;
+    private bool _isInAttackState;
     
     [Space(20)]
     
@@ -88,13 +89,20 @@ public class PlayerController : MonoBehaviour, IPorgressable
             //transform.rotation = Quaternion.Euler(0f, Mathf.,0f);
         }
 
-        if (moveDirection.magnitude >= 1)
+        if (IsEnemyClose())
         {
-            anim.SetBool("Running", true);
-        } else if (moveDirection.magnitude == 0)            
-        {
-            anim.SetBool("Running", false);
+            Debug.Log("attacked once RAY");
+            anim.SetTrigger("Attack");
+            
+            // if (!_isInAttackState)
+            // {   
+            //     
+            // }
         }
+
+        if (moveDirection.magnitude >= 1) anim.SetBool("Running", true);
+         else if (moveDirection.magnitude == 0) anim.SetBool("Running", false);
+        
 
         if (moveDirection != Vector3.zero)
         {
@@ -113,10 +121,15 @@ public class PlayerController : MonoBehaviour, IPorgressable
             characterController.Move(moveDirection * Time.fixedDeltaTime);
         }
         
+        
+        
     }
 
+    //[ContextMenu(nameof(AttackedReaction))]
     public IEnumerator AttackedReaction(float enemyRot, float impactSpeed = 3, float time = .5f)
     {
+        //StartCoroutine(AlreadyAttaked(2f));
+        
         //задержка перед ударом врага
         Debug.Log(_enemyInAttackRange + "Attack in process");
         
@@ -145,15 +158,35 @@ public class PlayerController : MonoBehaviour, IPorgressable
         }
     }
 
+    private IEnumerator AlreadyAttaked(float time)
+    {
+        _isInAttackState = true;
+        yield return new WaitForSeconds(time);
+        _isInAttackState = false;
+    }
+
     private bool IsGrounded()
     {
         Ray ray = new Ray(transform.position, Vector3.down);
 
         if (Physics.Raycast(ray, 3.0f, whatIsGround)) return true;
-        //if (!Physics.Raycast(ray, 3.0f, whatIsGround)) return false;
 
         return false;
-    } 
+    }
+
+    private bool IsEnemyClose()
+    {
+        Ray ray = new Ray(transform.position, transform.forward);
+
+        if (Physics.Raycast(ray, 1.6f, whatIsEnemy) && !_isInAttackState)
+        {
+            StartCoroutine(AlreadyAttaked(2));
+            return true;
+        }
+
+        return false;
+    }
+    
     public void UpdateLevelStats(int currentLvl)        
     {
         switch (currentLvl)
@@ -184,8 +217,9 @@ public class PlayerController : MonoBehaviour, IPorgressable
             // enemyBehaviour.Attacked(transform.eulerAngles.y, _punchStrength);
 
             // New
+
             
-            anim.SetTrigger("Attack");
+            
             EnemyBehaviour enemyBehaviour = other.gameObject.GetComponent<EnemyBehaviour>();
             enemyBehaviour.isBorting = true;
             enemyBehaviour.agent.enabled = false;
@@ -214,5 +248,11 @@ public class PlayerController : MonoBehaviour, IPorgressable
             UpdateLevelStats(CurrentLvl);
             //Debug.Log(CurrentLvl);
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawRay(transform.position, transform.forward * 2f);
     }
 }
