@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour, IPorgressable
     [SerializeField] private FloatingJoystick joystick;
 
     [SerializeField] private Animator anim;
+    [SerializeField] private CameraImpact cameraShake;
+    
     // private float horizontal;
     // private float vertical;
 
@@ -125,16 +127,16 @@ public class PlayerController : MonoBehaviour, IPorgressable
         
     }
 
-    //[ContextMenu(nameof(AttackedReaction))]
     public IEnumerator AttackedReaction(float enemyRot, float impactSpeed = 3, float time = .5f)
     {
         //StartCoroutine(AlreadyAttaked(2f));
         
         //задержка перед ударом врага
-        Debug.Log(_enemyInAttackRange + "Attack in process");
+        // Debug.Log(_enemyInAttackRange + "Attack in process");
         
         //yield return new WaitForSeconds(0.35f);
-
+        cameraShake.Shaking();
+        
         _enemyInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsEnemy);
         // условие если после задержки мы ещё возле врага
         Debug.Log(_enemyInAttackRange);

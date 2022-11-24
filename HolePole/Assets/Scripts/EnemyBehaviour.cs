@@ -37,6 +37,8 @@ public class EnemyBehaviour : MonoBehaviour
     public Vector3 playerMoveDir;
     public float playerStrength;
     private bool _isInAttackState;
+    private bool _isStartingDestEnds;
+    private bool _firstReachPlayer = true;
 
     //public AnimationCurve AttackedCurve;
     public bool playerAttack { get; set; }
@@ -124,8 +126,29 @@ public class EnemyBehaviour : MonoBehaviour
             playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
             playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
-            if ( startingDest) StartingDestination();
-            if (!playerInSightRange && !playerInAttackRange && !startingDest) Patroling();
+            if (startingDest)
+            {
+                // StartCoroutine(AttackAfterStartDest());
+                StartingDestination();
+            }
+            if (!startingDest )
+            {
+                _isStartingDestEnds = true;
+            }
+            
+            if (!startingDest && _isStartingDestEnds)
+            {
+                // chase player after starting dest
+                agent.SetDestination(player.position);
+            }
+
+            // if (playerInSightRange && !_firstReachPlayer)
+            // {
+            //     _isStartingDestEnds = false;
+            //     _firstReachPlayer = false;
+            // }
+            
+            if (!playerInSightRange && !playerInAttackRange && !startingDest && !_isStartingDestEnds) Patroling();
             if (playerInSightRange && !playerInAttackRange) ChasePlayer();
             if (IsEnemyClose())
             {
@@ -171,7 +194,6 @@ public class EnemyBehaviour : MonoBehaviour
     
     private void Patroling()
     {
-        Debug.Log("start patroling");
         anim.SetBool("Running", true);
         
         if (!walkPointSet) SearchWalkPoint();
@@ -311,6 +333,8 @@ public class EnemyBehaviour : MonoBehaviour
         yield return new WaitForSeconds(time);
         Destroy(gameObject);
     }
+
+    
 
     private void OnDestroy()
     {

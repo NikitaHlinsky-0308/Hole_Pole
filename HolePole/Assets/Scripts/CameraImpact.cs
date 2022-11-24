@@ -8,8 +8,9 @@ public class CameraImpact : MonoBehaviour
 {
 
     public bool start = false;
-    public AnimationCurve shakingCurve;
+    //public AnimationCurve shakingCurve;
     public float duration = 1f;
+    public float magnitude = 0.2f;
 
     void Update()
     {
@@ -18,28 +19,17 @@ public class CameraImpact : MonoBehaviour
             //start = false;
             //StartCoroutine(nameof(Shaking));
 
-            StartCoroutine(PlayCameraShakeAnimation(duration, .1f));
+            StartCoroutine(PlayCameraShakeAnimation(duration, magnitude));
             //Debug.Log("E key is pressed");
         } 
     }
     
-    IEnumerator Shaking()
+    public void Shaking()
     {
-        Vector3 startPosition = transform.position;
-        float elapsedTime = 0f;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            float strength = shakingCurve.Evaluate(elapsedTime / duration);
-            this.transform.position = startPosition + Random.insideUnitSphere * strength;
-            yield return null; 
-        }
-
-        transform.position = startPosition;
+        StartCoroutine(PlayCameraShakeAnimation(duration, magnitude));
     }
     
-    public IEnumerator PlayCameraShakeAnimation(float duration, float magnitude)
+    private IEnumerator PlayCameraShakeAnimation(float duration, float magnitude)
     {
         Vector3 originalPosition = transform.localPosition;
         float elapsedTime = 0f;
