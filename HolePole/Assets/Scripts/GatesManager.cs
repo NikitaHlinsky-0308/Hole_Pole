@@ -42,8 +42,8 @@ public class GatesManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         enemy.startingDest = true;
-        
-        
+        enemy.choosenOne = true;
+
     }
     
     

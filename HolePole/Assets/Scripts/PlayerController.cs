@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class PlayerController : MonoBehaviour, IPorgressable
 {
@@ -13,7 +14,10 @@ public class PlayerController : MonoBehaviour, IPorgressable
 
     [SerializeField] private Animator anim;
     [SerializeField] private CameraImpact cameraShake;
-    
+    [SerializeField] private VisualEffect runVFX;
+    [SerializeField] private VisualEffect splashVFX;
+    [SerializeField] private ParticleSystem punchVFX;
+
     // private float horizontal;
     // private float vertical;
 
@@ -58,9 +62,11 @@ public class PlayerController : MonoBehaviour, IPorgressable
 
     [SerializeField] private GameObject gateChanger;
     private GateChanger _gateChanger;
+    private LevelIndicator _lvlIndicator;
     private void Start()
     {
         //_gateChanger = gateChanger.GetComponent<GateChanger>();
+        _lvlIndicator = GetComponentInChildren<LevelIndicator>();
         CurrentLvl = 1;
         UpdateLevelStats(CurrentLvl);
     }
@@ -93,7 +99,6 @@ public class PlayerController : MonoBehaviour, IPorgressable
 
         if (IsEnemyClose())
         {
-            Debug.Log("attacked once RAY");
             anim.SetTrigger("Attack");
             
             // if (!_isInAttackState)
@@ -102,8 +107,11 @@ public class PlayerController : MonoBehaviour, IPorgressable
             // }
         }
 
-        if (moveDirection.magnitude >= 1) anim.SetBool("Running", true);
-         else if (moveDirection.magnitude == 0) anim.SetBool("Running", false);
+        if (moveDirection.magnitude >= 1)
+        {
+            anim.SetBool("Running", true);
+            PlayRunVFX();
+        } else if (moveDirection.magnitude == 0) anim.SetBool("Running", false);
         
 
         if (moveDirection != Vector3.zero)
@@ -121,10 +129,22 @@ public class PlayerController : MonoBehaviour, IPorgressable
         {
             moveDirection.y += (-9.81f);
             characterController.Move(moveDirection * Time.fixedDeltaTime);
+            PlaySplashVFX();
         }
         
         
         
+    }
+
+    private void PlayRunVFX()
+    {
+        //runVFX.Stop();
+        runVFX.Play();
+    }
+
+    private void PlaySplashVFX()
+    {
+        splashVFX.Play();
     }
 
     public IEnumerator AttackedReaction(float enemyRot, float impactSpeed = 3, float time = .5f)
@@ -196,14 +216,17 @@ public class PlayerController : MonoBehaviour, IPorgressable
             case 1:
                 // improve stats
                 _punchStrength = playerPower[0];
+                _lvlIndicator.ChangePrefab(0);
                 break;
             
             case 2:
                 _punchStrength = playerPower[1];
+                _lvlIndicator.ChangePrefab(1);
                 break;
             
             case 3:
                 _punchStrength = playerPower[2];
+                _lvlIndicator.ChangePrefab(2);
                 break;
         }
     }
@@ -221,7 +244,7 @@ public class PlayerController : MonoBehaviour, IPorgressable
             // New
 
             
-            
+            punchVFX.Play();
             EnemyBehaviour enemyBehaviour = other.gameObject.GetComponent<EnemyBehaviour>();
             enemyBehaviour.isBorting = true;
             enemyBehaviour.agent.enabled = false;
@@ -250,6 +273,12 @@ public class PlayerController : MonoBehaviour, IPorgressable
             UpdateLevelStats(CurrentLvl);
             //Debug.Log(CurrentLvl);
         }
+
+        // if (other.gameObject.CompareTag("Water"))
+        // {
+        //     Debug.Log(other.gameObject.layer.ToString());
+        //     PlaySplashVFX();
+        // }
     }
 
     private void OnDrawGizmos()

@@ -33,12 +33,14 @@ public class EnemyBehaviour : MonoBehaviour
 
     //States
     public float sightRange, attackRange;
-    public bool playerInSightRange, playerInAttackRange, enemyAttacked, isGrounded, isBorting;
+    public bool playerInSightRange, playerInAttackRange, enemyAttacked, isGrounded, isBorting, choosenOne;
     public Vector3 playerMoveDir;
     public float playerStrength;
     private bool _isInAttackState;
     private bool _isStartingDestEnds;
     private bool _firstReachPlayer = true;
+    private LevelIndicator _lvlIndicator;
+
 
     //public AnimationCurve AttackedCurve;
     public bool playerAttack { get; set; }
@@ -90,6 +92,7 @@ public class EnemyBehaviour : MonoBehaviour
         }
     private void Start()
     {
+        _lvlIndicator = GetComponentInChildren<LevelIndicator>();
         _gateChanger = gateChanger.GetComponent<GateChanger>();
         CurrentLvl = 1;
         UpdateLevelStats(CurrentLvl);
@@ -126,19 +129,21 @@ public class EnemyBehaviour : MonoBehaviour
             playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
             playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
-            if (startingDest)
+            if (startingDest && choosenOne)
             {
                 // StartCoroutine(AttackAfterStartDest());
                 StartingDestination();
             }
-            if (!startingDest )
+            if (!startingDest && choosenOne)
             {
                 _isStartingDestEnds = true;
             }
             
-            if (!startingDest && _isStartingDestEnds)
+            if (!startingDest && _isStartingDestEnds && choosenOne)
             {
                 // chase player after starting dest
+                // animation running
+                anim.SetBool("Running", true);
                 agent.SetDestination(player.position);
             }
 
@@ -395,14 +400,17 @@ public class EnemyBehaviour : MonoBehaviour
             case 1:
                 // improve stats
                 _punchStrength = playerPower[0];
+                _lvlIndicator.ChangePrefab(0);
                 break;
             
             case 2:
                 _punchStrength = playerPower[1];
+                _lvlIndicator.ChangePrefab(1);
                 break;
             
             case 3:
                 _punchStrength = playerPower[2];
+                _lvlIndicator.ChangePrefab(2);
                 break;
         }
     }
