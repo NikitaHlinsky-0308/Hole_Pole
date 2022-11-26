@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour, IPorgressable
     [SerializeField] private VisualEffect runVFX;
     [SerializeField] private VisualEffect splashVFX;
     [SerializeField] private ParticleSystem punchVFX;
+ 
 
     // private float horizontal;
     // private float vertical;
@@ -83,11 +84,11 @@ public class PlayerController : MonoBehaviour, IPorgressable
     {
         if (!_isUnderImpact)
         {
-            float horizontal = Input.GetAxisRaw("Horizontal");
-            float vertical = Input.GetAxisRaw("Vertical");
+            // float horizontal = Input.GetAxisRaw("Horizontal");
+            // float vertical = Input.GetAxisRaw("Vertical");
             
-            // float horizontal = joystick.Horizontal;
-            // float vertical = joystick.Vertical;
+            float horizontal = joystick.Horizontal;
+            float vertical = joystick.Vertical;
             
             moveDirection = new Vector3(horizontal, 0.0f, vertical);
             moveDirection.Normalize();

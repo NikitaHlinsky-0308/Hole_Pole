@@ -92,6 +92,7 @@ public class EnemyBehaviour : MonoBehaviour
         }
     private void Start()
     {
+        GameManager.instance.allEnemies.Add(this);
         _lvlIndicator = GetComponentInChildren<LevelIndicator>();
         _gateChanger = gateChanger.GetComponent<GateChanger>();
         CurrentLvl = 1;
@@ -336,6 +337,7 @@ public class EnemyBehaviour : MonoBehaviour
     private IEnumerator DestroyEnemy(float time)
     {
         yield return new WaitForSeconds(time);
+        GameManager.instance.allEnemies.Remove(this);
         Destroy(gameObject);
     }
 
