@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -66,7 +64,6 @@ public class PlayerController : MonoBehaviour, IPorgressable
     private LevelIndicator _lvlIndicator;
     private void Start()
     {
-        //_gateChanger = gateChanger.GetComponent<GateChanger>();
         _lvlIndicator = GetComponentInChildren<LevelIndicator>();
         CurrentLvl = 1;
         UpdateLevelStats(CurrentLvl);
@@ -95,17 +92,11 @@ public class PlayerController : MonoBehaviour, IPorgressable
             moveDirection *= speed;
 
             characterController.Move(moveDirection * Time.fixedDeltaTime);
-            //transform.rotation = Quaternion.Euler(0f, Mathf.,0f);
         }
 
         if (IsEnemyClose())
         {
             anim.SetTrigger("Attack");
-            
-            // if (!_isInAttackState)
-            // {   
-            //     
-            // }
         }
 
         if (moveDirection.magnitude >= 1)
@@ -153,14 +144,12 @@ public class PlayerController : MonoBehaviour, IPorgressable
         //StartCoroutine(AlreadyAttaked(2f));
         
         //задержка перед ударом врага
-        // Debug.Log(_enemyInAttackRange + "Attack in process");
         
         //yield return new WaitForSeconds(0.35f);
         cameraShake.Shaking();
         
         _enemyInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsEnemy);
         // условие если после задержки мы ещё возле врага
-        Debug.Log(_enemyInAttackRange);
         if (_enemyInAttackRange)
         {
 
@@ -192,7 +181,7 @@ public class PlayerController : MonoBehaviour, IPorgressable
     {
         Ray ray = new Ray(transform.position, Vector3.down);
 
-        if (Physics.Raycast(ray, 3.0f, whatIsGround)) return true;
+        if (Physics.Raycast(ray, 1.2f, whatIsGround)) return true;
 
         return false;
     }
@@ -236,15 +225,6 @@ public class PlayerController : MonoBehaviour, IPorgressable
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            // Old
-            // Debug.Log("Plus Enemy ------------------");
-            // EnemyBehaviour enemyBehaviour = other.gameObject.GetComponent<EnemyBehaviour>();
-            // // change speed depend on lvl stats
-            // enemyBehaviour.Attacked(transform.eulerAngles.y, _punchStrength);
-
-            // New
-
-            
             punchVFX.Play();
             EnemyBehaviour enemyBehaviour = other.gameObject.GetComponent<EnemyBehaviour>();
             enemyBehaviour.isBorting = true;
@@ -252,8 +232,6 @@ public class PlayerController : MonoBehaviour, IPorgressable
             enemyBehaviour.playerMoveDir = moveDirection;
             enemyBehaviour.playerStrength = _punchStrength;
             enemyBehaviour.StartCoroutine("borting");
-            
-            
         }
 
         if (other.gameObject.CompareTag("GatesPlus"))
@@ -263,7 +241,6 @@ public class PlayerController : MonoBehaviour, IPorgressable
 
             IncreaseLvl();
             UpdateLevelStats(CurrentLvl);
-            //Debug.Log(CurrentLvl);
         }
         if (other.gameObject.CompareTag("GatesMinus"))
         {
@@ -272,14 +249,8 @@ public class PlayerController : MonoBehaviour, IPorgressable
 
             DecreaseLvl();
             UpdateLevelStats(CurrentLvl);
-            //Debug.Log(CurrentLvl);
         }
-
-        // if (other.gameObject.CompareTag("Water"))
-        // {
-        //     Debug.Log(other.gameObject.layer.ToString());
-        //     PlaySplashVFX();
-        // }
+        
     }
 
     private void OnDrawGizmos()

@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -110,12 +108,10 @@ public class EnemyBehaviour : MonoBehaviour
             if (Physics.Raycast(ray, 3.0f, whatIsGround))
             {
                 // if we hit nothing, do gravity and die s
-                Debug.Log("Did Hit Ground");
                 isGrounded = true;
             }
             else
             {
-                Debug.Log("Doesn't hit the ground");
                 // apply gravity here
                 // create instance for gravityScaler
                 transform.Translate( new Vector3(0, -9.81f, 0) * Time.deltaTime, Space.World);
@@ -186,7 +182,6 @@ public class EnemyBehaviour : MonoBehaviour
             // }
 
 
-            //Debug.Log(player.transform.eulerAngles.y);
             //WaveHealthIncrease();
         }
     }
@@ -253,7 +248,6 @@ public class EnemyBehaviour : MonoBehaviour
         //
         //     
         //     
-        //     Debug.Log("attack");
         //     alreadyAttacked = true;
         //     Invoke(nameof(ResetAttack), timeBetweenAttacks);
         // }
@@ -306,13 +300,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     private IEnumerator borting()
     {
-        // Old
-        // yield return new WaitForSeconds(0.3f);
-        //agent.updateRotation = true;
-        // playerAttack = false; 
-        
-        // New 
-        
+
         yield return new WaitForSeconds(1.5f);
         isBorting = false; 
         playerAttack = false; 
@@ -343,11 +331,6 @@ public class EnemyBehaviour : MonoBehaviour
 
     
 
-    private void OnDestroy()
-    {
-        //EnemyManager.instance.enemies.Remove(this);
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("GatesPlus"))
@@ -356,7 +339,6 @@ public class EnemyBehaviour : MonoBehaviour
              _gateChanger.SetOppositeGate();
              IncreaseLvl();
              UpdateLevelStats(CurrentLvl);
-             //Debug.Log(CurrentLvl);
         }
         if (other.gameObject.CompareTag("GatesMinus"))
         {
@@ -364,7 +346,6 @@ public class EnemyBehaviour : MonoBehaviour
             _gateChanger.SetOppositeGate();
              DecreaseLvl();
              UpdateLevelStats(CurrentLvl);
-             //Debug.Log(CurrentLvl);
         }
         if (other.gameObject.CompareTag("Player"))
         {
@@ -372,11 +353,6 @@ public class EnemyBehaviour : MonoBehaviour
                 transform.eulerAngles.y, 
                 _punchStrength));
         }
-        
-        // if (other.gameObject.CompareTag("Player"))
-        // {
-        //     agent.enabled = false;
-        // }
         
         
     }

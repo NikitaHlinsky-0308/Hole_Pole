@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -20,7 +18,6 @@ public class CameraImpact : MonoBehaviour
             //StartCoroutine(nameof(Shaking));
 
             StartCoroutine(PlayCameraShakeAnimation(duration, magnitude));
-            //Debug.Log("E key is pressed");
         } 
     }
     

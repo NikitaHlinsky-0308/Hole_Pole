@@ -1,4 +1,3 @@
-
 public interface IPorgressable
 {
     public int CurrentLvl { get; set; }

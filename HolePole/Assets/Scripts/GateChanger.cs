@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -70,7 +69,6 @@ public class GateChanger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("gate works");
 
         if (other.CompareTag("Player"))
         {
