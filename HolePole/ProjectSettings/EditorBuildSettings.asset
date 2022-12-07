@@ -6,27 +6,27 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Apocalypse_lvl_1.unity
+    guid: 98b6bb695d442ca40a6273e9d995ea4e
+  - enabled: 1
+    path: Assets/Scenes/Apocalypse_lvl_2.unity
+    guid: 34c7f6754ef0e214fb683637b2597a27
+  - enabled: 1
+    path: Assets/Scenes/Apocalypse_lvl_3.unity
+    guid: 931d602daba88b34aa71ec801a11e16a
+  - enabled: 1
+    path: Assets/Scenes/Apocalypse_lvl_4.unity
+    guid: 24a91906f5aaf3945b467e317042e25a
+  - enabled: 1
     path: Assets/Scenes/Wild_West_lvl_1.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Scenes/Wild_West_lvl_2.unity
     guid: 33e7276f6908ff54d8390b0742d91374
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Wild_West_lvl_3.unity
     guid: 0462a2ff7a360c04d81ca47532bfcb42
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Wild_West_lvl_4.unity
     guid: 93cfb0a101848974f9d099f26828b553
-  - enabled: 0
-    path: Assets/Scenes/Apocalypse_lvl_1.unity
-    guid: 98b6bb695d442ca40a6273e9d995ea4e
-  - enabled: 0
-    path: Assets/Scenes/Apocalypse_lvl_2.unity
-    guid: 34c7f6754ef0e214fb683637b2597a27
-  - enabled: 0
-    path: Assets/Scenes/Apocalypse_lvl_3.unity
-    guid: 931d602daba88b34aa71ec801a11e16a
-  - enabled: 0
-    path: Assets/Scenes/Apocalypse_lvl_4.unity
-    guid: 24a91906f5aaf3945b467e317042e25a
   m_configObjects: {}
